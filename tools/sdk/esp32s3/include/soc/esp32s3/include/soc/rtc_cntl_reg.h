@@ -369,7 +369,6 @@ ork.*/
 #define RTC_CNTL_MIN_SLP_VAL_M  ((RTC_CNTL_MIN_SLP_VAL_V)<<(RTC_CNTL_MIN_SLP_VAL_S))
 #define RTC_CNTL_MIN_SLP_VAL_V  0xFF
 #define RTC_CNTL_MIN_SLP_VAL_S  8
-#define RTC_CNTL_MIN_SLP_VAL_MIN 2
 
 #define RTC_CNTL_TIMER6_REG          (DR_REG_RTCCNTL_BASE + 0x30)
 /* RTC_CNTL_DG_PERI_POWERUP_TIMER : R/W ;bitpos:[31:25] ;default: 7'h8 ; */
@@ -1301,7 +1300,7 @@ ork.*/
 #define RTC_CNTL_ANA_CLK_RTC_SEL_V  0x3
 #define RTC_CNTL_ANA_CLK_RTC_SEL_S  30
 /* RTC_CNTL_FAST_CLK_RTC_SEL : R/W ;bitpos:[29] ;default: 1'b0 ; */
-/*description: fast_clk_rtc sel. 0: XTAL div 4.*/
+/*description: fast_clk_rtc sel. 0: XTAL div 2.*/
 #define RTC_CNTL_FAST_CLK_RTC_SEL    (BIT(29))
 #define RTC_CNTL_FAST_CLK_RTC_SEL_M  (BIT(29))
 #define RTC_CNTL_FAST_CLK_RTC_SEL_V  0x1
@@ -3683,6 +3682,9 @@ ork.*/
 #define RTC_CNTL_DISABLE_RTC_CPU_V  0x1
 #define RTC_CNTL_DISABLE_RTC_CPU_S  31
 
+/*
+Due to the LDO slaves, RTC_CNTL_DATE_REG[18:13] can only be used for LDO adjustment.
+*/
 #define RTC_CNTL_DATE_REG          (DR_REG_RTCCNTL_BASE + 0x1FC)
 /* RTC_CNTL_DATE : R/W ;bitpos:[27:0] ;default: 28'h2101271 ; */
 /*description: .*/
@@ -3690,7 +3692,12 @@ ork.*/
 #define RTC_CNTL_DATE_M  ((RTC_CNTL_DATE_V)<<(RTC_CNTL_DATE_S))
 #define RTC_CNTL_DATE_V  0xFFFFFFF
 #define RTC_CNTL_DATE_S  0
-
+/*LDO SLAVE : R/W ;bitpos:[18:13] ; default: 6'd0 ;*/
+/*description: .*/
+#define RTC_CNTL_SLAVE_PD    0x0000003F
+#define RTC_CNTL_SLAVE_PD_M  ((RTC_CNTL_SLAVE_V)<<(RTC_CNTL_SLAVE_S))
+#define RTC_CNTL_SLAVE_PD_V  0x3F
+#define RTC_CNTL_SLAVE_PD_S  13
 
 #ifdef __cplusplus
 }

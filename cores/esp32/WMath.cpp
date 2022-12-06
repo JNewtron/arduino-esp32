@@ -26,6 +26,7 @@
 extern "C" {
 #include <stdlib.h>
 #include "esp_system.h"
+#include "esp_random.h"
 }
 #include "esp32-hal-log.h"
 

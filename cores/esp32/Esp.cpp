@@ -20,7 +20,10 @@
 #include "Arduino.h"
 #include "Esp.h"
 #include "esp_sleep.h"
+#include "esp_chip_info.h"
 #include "esp_spi_flash.h"
+#include "esp_mac.h"
+#include "esp_rom_spiflash.h"
 #include <memory>
 #include <soc/soc.h>
 #include <esp_partition.h>
@@ -377,18 +380,18 @@ FlashMode_t EspClass::magicFlashChipMode(uint8_t byte)
 
 bool EspClass::flashEraseSector(uint32_t sector)
 {
-    return spi_flash_erase_sector(sector) == ESP_OK;
+    return esp_rom_spiflash_erase_sector(sector) == ESP_OK;
 }
 
 // Warning: These functions do not work with encrypted flash
 bool EspClass::flashWrite(uint32_t offset, uint32_t *data, size_t size)
 {
-    return spi_flash_write(offset, (uint32_t*) data, size) == ESP_OK;
+    return esp_rom_spiflash_write(offset, (uint32_t*) data, size) == ESP_OK;
 }
 
 bool EspClass::flashRead(uint32_t offset, uint32_t *data, size_t size)
 {
-    return spi_flash_read(offset, (uint32_t*) data, size) == ESP_OK;
+    return esp_rom_spiflash_read(offset, (uint32_t*) data, size) == ESP_OK;
 }
 
 bool EspClass::partitionEraseRange(const esp_partition_t *partition, uint32_t offset, size_t size) 

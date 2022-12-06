@@ -337,7 +337,7 @@ void uartSetBaudRate(uart_t* uart, uint32_t baud_rate)
         return;
     }
     UART_MUTEX_LOCK();
-    uart_ll_set_baudrate(UART_LL_GET_HW(uart->num), _get_effective_baudrate(baud_rate));
+    uart_set_baudrate(UART_LL_GET_HW(uart->num), _get_effective_baudrate(baud_rate));
     UART_MUTEX_UNLOCK();
 }
 
@@ -348,7 +348,8 @@ uint32_t uartGetBaudRate(uart_t* uart)
     }
 
     UART_MUTEX_LOCK();
-    uint32_t baud_rate = uart_ll_get_baudrate(UART_LL_GET_HW(uart->num));
+    uint32_t baud_rate = 0;
+    uart_get_baudrate(UART_LL_GET_HW(uart->num), &baud_rate);
     UART_MUTEX_UNLOCK();
     return baud_rate;
 }

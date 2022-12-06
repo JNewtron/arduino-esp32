@@ -6,7 +6,7 @@
 #   idf.py build
 
 set(min_supported_idf_version "4.4.0")
-set(max_supported_idf_version "4.4.99")
+set(max_supported_idf_version "5.4.99")
 set(idf_version "${IDF_VERSION_MAJOR}.${IDF_VERSION_MINOR}.${IDF_VERSION_PATCH}")
 
 if ("${idf_version}" AND NOT "$ENV{ARDUINO_SKIP_IDF_VERSION_CHECK}")
@@ -25,13 +25,13 @@ endif()
 set(CORE_SRCS
   cores/esp32/base64.cpp
   cores/esp32/cbuf.cpp
-  cores/esp32/esp32-hal-adc.c
+  # cores/esp32/esp32-hal-adc.c
   cores/esp32/esp32-hal-bt.c
   cores/esp32/esp32-hal-cpu.c
   # cores/esp32/esp32-hal-dac.c
   cores/esp32/esp32-hal-gpio.c
-  cores/esp32/esp32-hal-i2c.c
-  cores/esp32/esp32-hal-i2c-slave.c
+  # cores/esp32/esp32-hal-i2c.c
+  # cores/esp32/esp32-hal-i2c-slave.c
   cores/esp32/esp32-hal-ledc.c
   # cores/esp32/esp32-hal-matrix.c
   cores/esp32/esp32-hal-misc.c
@@ -43,7 +43,7 @@ set(CORE_SRCS
   cores/esp32/esp32-hal-timer.c
   # cores/esp32/esp32-hal-tinyusb.c
   # cores/esp32/esp32-hal-touch.c
-  cores/esp32/esp32-hal-uart.c
+  # cores/esp32/esp32-hal-uart.c
   cores/esp32/esp32-hal-rmt.c
   cores/esp32/Esp.cpp
   cores/esp32/FunctionalInterrupt.cpp
@@ -85,8 +85,8 @@ set(LIBRARY_SRCS
   # libraries/FFat/src/FFat.cpp
   libraries/FS/src/FS.cpp
   libraries/FS/src/vfs_api.cpp
-  libraries/HTTPClient/src/HTTPClient.cpp
-  libraries/HTTPUpdate/src/HTTPUpdate.cpp
+  # libraries/HTTPClient/src/HTTPClient.cpp
+  # libraries/HTTPUpdate/src/HTTPUpdate.cpp
   # libraries/LittleFS/src/LittleFS.cpp
   # libraries/I2S/src/I2S.cpp
   # libraries/NetBIOS/src/NetBIOS.cpp
@@ -106,8 +106,8 @@ set(LIBRARY_SRCS
   libraries/SPIFFS/src/SPIFFS.cpp
   # libraries/SPI/src/SPI.cpp
   # libraries/Ticker/src/Ticker.cpp
-  libraries/Update/src/Updater.cpp
-  libraries/Update/src/HttpsOTAUpdate.cpp
+  # libraries/Update/src/Updater.cpp
+  # libraries/Update/src/HttpsOTAUpdate.cpp
   # libraries/USB/src/USBHID.cpp
   # libraries/USB/src/USBHIDMouse.cpp
   # libraries/USB/src/USBHIDKeyboard.cpp
@@ -119,19 +119,19 @@ set(LIBRARY_SRCS
   # libraries/WebServer/src/WebServer.cpp
   # libraries/WebServer/src/Parsing.cpp
   # libraries/WebServer/src/detail/mimetable.cpp
-  libraries/WiFiClientSecure/src/ssl_client.cpp
-  # libraries/WiFiClientSecure/src/esp_crt_bundle.c
-  libraries/WiFiClientSecure/src/WiFiClientSecure.cpp
-  # libraries/WiFi/src/WiFiAP.cpp
-  libraries/WiFi/src/WiFiClient.cpp
-  libraries/WiFi/src/WiFi.cpp
-  libraries/WiFi/src/WiFiGeneric.cpp
-  # libraries/WiFi/src/WiFiMulti.cpp
-  libraries/WiFi/src/WiFiScan.cpp
-  # libraries/WiFi/src/WiFiServer.cpp
-  libraries/WiFi/src/WiFiSTA.cpp
-  # libraries/WiFi/src/WiFiUdp.cpp
-  # libraries/WiFiProv/src/WiFiProv.cpp
+  # libraries/WiFiClientSecure/src/ssl_client.cpp
+  # # libraries/WiFiClientSecure/src/esp_crt_bundle.c
+  # libraries/WiFiClientSecure/src/WiFiClientSecure.cpp
+  # # libraries/WiFi/src/WiFiAP.cpp
+  # libraries/WiFi/src/WiFiClient.cpp
+  # libraries/WiFi/src/WiFi.cpp
+  # libraries/WiFi/src/WiFiGeneric.cpp
+  # # libraries/WiFi/src/WiFiMulti.cpp
+  # libraries/WiFi/src/WiFiScan.cpp
+  # # libraries/WiFi/src/WiFiServer.cpp
+  # libraries/WiFi/src/WiFiSTA.cpp
+  # # libraries/WiFi/src/WiFiUdp.cpp
+  # # libraries/WiFiProv/src/WiFiProv.cpp
   libraries/Wire/src/Wire.cpp
   )
 
@@ -181,8 +181,8 @@ set(includedirs
   # libraries/Ethernet/src
   # libraries/FFat/src
   libraries/FS/src
-  libraries/HTTPClient/src
-  libraries/HTTPUpdate/src
+  # libraries/HTTPClient/src
+  # libraries/HTTPUpdate/src
   # libraries/LittleFS/src
   # libraries/I2S/src
   # libraries/NetBIOS/src
@@ -196,17 +196,17 @@ set(includedirs
   libraries/Ticker/src
   libraries/Update/src
   # libraries/USB/src
-  # libraries/WebServer/src
-  libraries/WiFiClientSecure/src
-  libraries/WiFi/src
-  # libraries/WiFiProv/src
+  # # libraries/WebServer/src
+  # libraries/WiFiClientSecure/src
+  # libraries/WiFi/src
+  # # libraries/WiFiProv/src
   libraries/Wire/src
   )
 
 set(srcs ${CORE_SRCS} ${LIBRARY_SRCS} ${BLE_SRCS})
 set(priv_includes cores/esp32/libb64)
-set(requires spi_flash mbedtls esp_adc_cal wifi_provisioning nghttp wpa_supplicant)
-set(priv_requires fatfs nvs_flash app_update spiffs bootloader_support openssl bt esp_ipc esp_hid)
+set(requires spi_flash mbedtls esp_adc wifi_provisioning wpa_supplicant esp_psram)
+set(priv_requires fatfs nvs_flash app_update spiffs bootloader_support bt esp_hid)
 
 idf_component_register(INCLUDE_DIRS ${includedirs} PRIV_INCLUDE_DIRS ${priv_includes} SRCS ${srcs} REQUIRES ${requires} PRIV_REQUIRES ${priv_requires})
 
@@ -242,16 +242,16 @@ endfunction()
 
 maybe_add_component(esp-dsp)
 
-# if(CONFIG_ESP_RMAKER_WORK_QUEUE_TASK_STACK)
-#     maybe_add_component(esp_rainmaker)
-#     maybe_add_component(qrcode)
+# # if(CONFIG_ESP_RMAKER_WORK_QUEUE_TASK_STACK)
+# #     maybe_add_component(esp_rainmaker)
+# #     maybe_add_component(qrcode)
+# # endif()
+# # if(IDF_TARGET MATCHES "esp32s2|esp32s3" AND CONFIG_TINYUSB_ENABLED)
+# #     maybe_add_component(arduino_tinyusb)
+# # endif()
+# if(NOT CONFIG_ARDUINO_SELECTIVE_COMPILATION OR CONFIG_ARDUINO_SELECTIVE_ArduinoOTA)
+#     maybe_add_component(esp_https_ota)
 # endif()
-# if(IDF_TARGET MATCHES "esp32s2|esp32s3" AND CONFIG_TINYUSB_ENABLED)
-#     maybe_add_component(arduino_tinyusb)
-# endif()
-if(NOT CONFIG_ARDUINO_SELECTIVE_COMPILATION OR CONFIG_ARDUINO_SELECTIVE_ArduinoOTA)
-    maybe_add_component(esp_https_ota)
-endif()
-# if(NOT CONFIG_ARDUINO_SELECTIVE_COMPILATION OR CONFIG_ARDUINO_SELECTIVE_LITTLEFS)
-#     maybe_add_component(esp_littlefs)
-# endif()
+# # if(NOT CONFIG_ARDUINO_SELECTIVE_COMPILATION OR CONFIG_ARDUINO_SELECTIVE_LITTLEFS)
+# #     maybe_add_component(esp_littlefs)
+# # endif()
